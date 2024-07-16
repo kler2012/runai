@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health and Fitness Survey</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+background-color: #000000;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            background-color: #000000;
+            border-radius: 20px;
+            margin-top: 4%;
+        }
+
+        h1 {
+            margin: 0 0 20px;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        p {
+            margin: 0 0 40px;
+            font-size: 1.2rem;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .login-input {
+            width: 100%;
+            height: 50px;
+            margin: 0 0 20px;
+            padding: 0 20px;
+            border: 2px solid #fff;
+            border-radius: 2%;
+            background-color: transparent;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin: 0 0 20px;
+            padding: 20px;
+            border: 2px solid #fff;
+            border-radius: 2%;
+            background-color: transparent;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+            resize: none;
+        }
+
+        select {
+            width: 100%;
+            height: 50px;
+            margin: 0 0 20px;
+            padding: 0 20px;
+            border: 2px solid #fff;
+            border-radius: 2%;
+            background-color: transparent;
+            color: #757575;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .btn, a {
+            width: 100%;
+            height: 50px;
+            margin-bottom: 10px;
+            padding: 0;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            background-color: #0070FF;
+            color: #fff;
+            border: 2px solid #0070FF;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: transparent;
+        }
+
+        #thank-you-message {
+            display: none;
+        }
+
+        #back-button {
+            display: none;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 2%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Дополнительная информация</h1>
+        <p id="form-instructions">Пожалуйста, заполните следующую форму, чтобы помочь нам улучшить ваше взаимодействие с нашим сервисом.</p>
+        <form id="survey-form">
+
+      
+
+            <select name="reason" id="reason" required>
+                <option value="" hidden>Причина использования сервиса:...</option>
+                <option value="Улучшить свою технику">Улучшить свою технику</option>
+                <option value="Проверить свои ошибки">Проверить свои ошибки</option>
+            </select><br>
+
+            <select name="quantity" id="quantity" required>
+                <option value="" hidden>Количество тренировок в неделю:...</option>
+                <option value="Менее 1 раза в неделю">Менее 1 раза в неделю</option>
+                <option value="1-2 раза в неделю">1-2 раза в неделю</option>
+                <option value="3-4 раза в неделю">3-4 раза в неделю</option>
+                <option value="Более 5 раз в неделю">Более 5 раз в неделю</option>
+            </select><br>
+
+            <input class="btn" type="submit" value="Отправить">
+        </form>
+
+        <div id="thank-you-message" class="thank-you-message">
+            <p>Спасибо, что прошли опрос!</p>
+        </div>
+        <a id="back-button" class="btn btn-back" href="{{ url_for('index') }}">Вернуться на главную страницу</a>
+    </div>
+
+    <script>
+        document.getElementById('survey-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+
+            fetch('{{ url_for("additional_info") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('thank-you-message').style.display = 'block';
+                    document.getElementById('back-button').style.display = 'block';
+                    document.getElementById('survey-form').style.display = 'none';
+                    document.getElementById('form-instructions').style.display = 'none';
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        });
+
+        var ageSelect = document.getElementById("age");
+    for (var i = 10; i <= 100; i++) {
+        var option = document.createElement("option");
+        option.text = i;
+        option.value = i;
+        ageSelect.appendChild(option);
+    }
+
+    
+    var heightSelect = document.getElementById("height");
+    for (var i = 100; i <= 250; i++) {
+        var option = document.createElement("option");
+        option.text = i + " см";
+        option.value = i;
+        heightSelect.appendChild(option);
+    }
+
+    var weightSelect = document.getElementById("weight");
+    for (var i = 40; i <= 500; i++) {
+        var option = document.createElement("option");
+        option.text = i + " кг";
+        option.value = i;
+        weightSelect.appendChild(option);
+    }
+    </script>
+</body>
+</html>

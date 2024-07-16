@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Flask App</title>
+</head>
+<body>
+    <h1>Welcome to My Flask App!</h1>
+    <p>This is a simple HTML page served with Flask.</p>
+    <h2>Analysis IDs</h2>
+    <ul>
+        {% for record in records %}
+            <li>
+                {{ record.ID_Analysis }} - 
+                <a href="/video/{{ record.ID_Analysis }}">Download Original Video</a> |
+                <a href="/processed_video/{{ record.ID_Analysis }}">Download Processed Video</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

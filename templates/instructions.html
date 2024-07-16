@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+    <!--Меню-->
+    <header>
+        <a href="{{ url_for('index') }}" class="logo">БЕГ.AI</a>
+
+        <nav>
+            <ul>
+              <li> <a href="{{ url_for('index') }}">Главная</a></li>
+                <li> <a href="{{ url_for('instructions') }}">Инструкция</a></li>
+                <li><a class="smooth-scroll" href="{{ url_for('index') }}">Преимущества</a></li>
+                <li> <a class="smooth-scroll"href="#footer">Контакты</a></li>
+                <li> <a href="{{ url_for('price') }}">Цена</a></li>
+            </ul>
+        </nav>
+        <div class="rega">
+          {% if not user.is_authenticated %}
+          <a href="{{ url_for('register') }}" class="sign">Регистрация</a>
+          <a href="{{ url_for('login') }}" class="login">Войти</a>
+          {% else %}
+          <a href="{{ url_for('profile') }}" class="sign">Личный кабинет</a>
+          <a href="{{ url_for('logout') }}" class="login">Выйти</a>
+          {% endif %}
+      </div>
+    </header>
+    <!--Меню-->
+
+        <div class="fon">
+            <h1 class="instr">Требования к видео</h1>
+            <p class="treb">Следуйте этим советам, чтобы получить наилучшие<br>результаты анализа беговой формы.</p>
+        </div>
+        
+        <div class="steps-block">
+            <h1 class="steps-title">Шаг за шагом</h1>
+            <div class="step" id="step1">
+                <div class="step-content">
+                    <div class="step-number">01</div>
+                    <div class="step-description">Используйте штатив или попросите друга снять вас. Камера должна быть расположена в альбомном режиме, ровно и неподвижно. В кадре должен быть только один человек.</div>
+                </div>
+                <div class="step-image">
+                    <img src="{{ url_for('static', filename='img/любитель.jpg') }}" alt="Step 1">
+                </div>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-content">
+                    <div class="step-number">02</div>
+                    <div class="step-description">Снимите одно видео. Бег в видео должен быть слева направо. В видео бегун должен попасть в полный рост. Рассотояние от линии бега до камеры должно быть 5-6 метров</div>
+                </div>
+                <div class="step-image">
+                    <img src="{{ url_for('static', filename='img/любитель.jpg') }}" alt="Step 2">
+                </div>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-content">
+                    <div class="step-number">03</div>
+                    <div class="step-description">Начать бег необходимо до попадания в кадр, чтобы в кадре уже был набран нормальный темп и скорость бега.</div>
+                </div>
+                <div class="step-image">
+                    <img src="{{ url_for('static', filename='img/advantages.jpg') }}" alt="Step 3">
+                </div>
+            </div>
+        </div>
+        
+
+
+        <div class="footer" id="footer">
+            <div class="container">
+                <div class="infa logo">
+                    <a href="#" class="logo">БЕГ.AI</a>
+                </div>
+                <div class="infa contacts">
+                    <p class="zagolovok">Контакты</p>
+                    <p class="pun">
+                      <a href="tel:+79062802522">+7 906 280 2522</a>
+                    </p>
+                    <p class="pun">
+                      <a href="mailto:runai.@mail.ru">runai.@mail.ru</a>
+                    </p>
+                    <p class="pun">
+                      <a href="https://t.me/goorbunova">Написать в Telegram</a>
+                    </p>
+                </div>
+                <div class="infa company">
+                    <p class="zagolovok">Компания</p>
+                    <p class="pun">
+                      <a class="smooth-scroll" href="#my-block">Преимущества</a>
+                    </p>
+                    <p class="pun">
+                      <a href="{{ url_for('feedback') }}">Обратная связь</a>
+                    </p>
+                </div>
+                <div class="infa product">
+                    <p class="zagolovok">Продукт</p>
+                    <p class="pun">
+                      <a href="{{ url_for('instructions') }}">Инструкция</a>
+                    </p>
+                </div>
+            </div>
+          </div>      
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+  const steps = document.querySelectorAll('.step');
+  
+  function isInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+  }
+
+  function checkSteps() {
+    steps.forEach((step, index) => {
+      if (isInViewport(step)) {
+        setTimeout(() => {
+          step.classList.add('in-view');
+          step.classList.add(`animate-${index + 1}`);
+        }, index * 500); 
+      }
+    });
+  }
+
+  window.addEventListener('scroll', checkSteps);
+  window.addEventListener('resize', checkSteps);
+  checkSteps(); 
+});
+
+document.querySelectorAll('.smooth-scroll').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+      
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      });
+
+</script>
+</body>
+</html>

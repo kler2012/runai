@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style-lk.css')}}">
+</head>
+<body>
+    <!--Меню-->
+    <header>
+      <a href="{{ url_for('index') }}" class="logo">БЕГ.AI</a>
+  
+      <nav>
+          <ul>
+            <li> <a href="{{ url_for('index') }}">Главная</a></li>
+              <li> <a href="{{ url_for('instructions') }}">Инструкция</a></li>
+              <li> <a class="smooth-scroll" href="#my-block">Преимущества</a></li>
+              <li> <a class="smooth-scroll" href="#footer">Контакты</a></li>
+              <li> <a href="{{ url_for('price') }}">Цена</a></li>
+          </ul>
+      </nav>
+      <div class="rega">
+        <form method="POST" action="{{ url_for('buy_analysis') }}">
+            <button type="submit">Купить анализ</button>
+            <a href="{{ url_for('logout') }}" class="sign">Выйти</a>
+        </form>
+      </div>
+  </header>
+    <!--Меню-->
+
+    <div class="container-lk">
+        
+        <div class="sidebar">
+            <button class="sidebar-button active" data-target="profile">Профиль</button>
+            <button class="sidebar-button" data-target="analysis">Анализ</button>
+          </div>
+          
+          <main>
+            <div id="section-profile" class="section section-active">
+                <h1>Профиль</h1>
+                <div class="card-container">
+                <div class="individ">
+                  <h2>{{ user.Name }}</h2>
+                  <div class="infa">
+                  <p><strong>Почта:</strong> <span id="email">{{ user.Login }}</span></p>
+                  <p><strong>Причина:</strong> <span id="reason">{{ user.Reason }}</span></p>
+                  <p><strong>Кол-во тренировок:</strong> <span id="training">{{ user.Quantity }}</span></p>
+                  <p><strong>Количество доступных попыток: </strong>{{ user.Points }}</p>
+                </div>
+                  <div class="infa">
+                    <h2>Чтобы смогла четко анализировать, следует соблюдать требовани:</h2>
+                    <p><strong>Формат:</strong> <span>mp4</span></p>
+                    <p><strong>Разрешение:</strong> <span>720p</span></p>
+                    <p><strong>Размер:</strong> <span>Не более 10 MB</span></p>
+                    <p>С подробной инструкцией как снимать видео, можете ознакомитсья <a href="#">здесь</a></p>
+                    </div>
+
+                </div>
+                <div class="download" id="dropArea">
+                  <div class="video-upload">
+                      <p>Перетащите ваше видео или нажмите,<br>чтобы выбрать из списка</p>
+                      <form id="videoUploadForm" method="POST" action="{{ url_for('profile') }}" enctype="multipart/form-data">
+                          <input type="file" id="video" name="video" accept="video/mp4" style="display:none;" required>
+                          <button type="button" class="uploadButton" id="selectVideoButton">Добавить видео</button>
+                          <button type="submit" class="uploadButton" id="uploadVideoButton" style="display:none;">Загрузить видео</button>
+                          <div id="videoName"></div>
+                          <div id="thumbnailPreview"></div>
+                      </form>
+                  </div>
+              </div>            
+              </div>
+            </div>
+            
+            <div id="section-analysis" class="section" style="display: none;">
+              <h1>Анализ</h1>
+              <div class="card-container">
+                  {% for analysis in user.analyses %}
+                      <figure class="ease-image">
+                          <a href="{{ url_for('view_analysis', analysis_id=analysis.ID_Analysis) }}" target="_blank">
+                              <img src="{{ url_for('video_thumbnail', analysis_id=analysis.ID_Analysis) }}" alt="Video Preview">
+                          </a>
+                          <figcaption>Дата: {{ analysis.UploadDate.strftime('%Y-%m-%d') }}</figcaption>
+                      </figure>
+                  {% endfor %}
+              </div>
+          </div>
+          
+          
+          
+          </main>
+    </div>
+
+ 
+    <div id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        
+          const sidebarButtons = document.querySelectorAll('.sidebar-button');
+        
+          
+          sidebarButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+             
+              sidebarButtons.forEach(function(btn) {
+                btn.classList.remove('active');
+              });
+        
+        
+              this.classList.add('active');
+        
+           
+              const main = document.querySelector('main');
+              const sections = document.querySelectorAll('.section');
+        
+          
+              sections.forEach(function(section) {
+                section.style.display = 'none';
+              });
+        
+          
+              const targetSection = document.querySelector('#section-' + this.dataset.target);
+              if (targetSection) {
+                targetSection.style.display = 'block';
+              }
+            });
+          });
+        
+
+          if (sidebarButtons.length > 0) {
+            sidebarButtons[0].click();
+          }
+        });
+
+ 
+        const dropArea = document.getElementById('dropArea');
+        const videoInput = document.getElementById('video');
+        const selectVideoButton = document.getElementById('selectVideoButton');
+        const uploadVideoButton = document.getElementById('uploadVideoButton');
+        const videoNameDiv = document.getElementById('videoName');
+
+
+        videoInput.onchange = function() {
+            const videoFile = this.files[0];
+            if (videoFile && videoFile.type === 'video/mp4') {
+                selectVideoButton.style.display = 'none';
+                uploadVideoButton.style.display = 'block';
+                videoNameDiv.textContent = `Выбрано видео: ${videoFile.name}`;
+            } else {
+                alert('Пожалуйста, выберите файл в формате MP4.');
+                this.value = ''; 
+            }
+        }
+
+        selectVideoButton.onclick = function() {
+            videoInput.click();
+        }
+
+      
+        dropArea.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropArea.style.borderColor = '#005bb5';
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.borderColor = '#0070FF';
+        });
+
+        dropArea.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropArea.style.borderColor = '#0070FF';
+            const files = event.dataTransfer.files;
+            if (files.length && files[0].type === 'video/mp4') {
+                videoInput.files = files; 
+                selectVideoButton.style.display = 'none';
+                uploadVideoButton.style.display = 'block';
+                videoNameDiv.textContent = `Выбрано видео: ${files[0].name}`;
+            } else {
+                alert('Пожалуйста, выберите файл в формате MP4.');
+            }
+        });
+
+
+        const form = document.getElementById('videoUploadForm');
+        form.addEventListener('submit', function() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        });
+
+    </script>
+</body>
+</html>

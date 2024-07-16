@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Главная</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+  <!--Меню-->
+  <header>
+    <a href="{{ url_for('index') }}" class="logo">БЕГ.AI</a>
+
+    <nav>
+        <ul>
+          <li> <a href="{{ url_for('index') }}">Главная</a></li>
+            <li> <a href="{{ url_for('instructions') }}">Инструкция</a></li>
+            <li> <a class="smooth-scroll" href="#my-block">Преимущества</a></li>
+            <li> <a class="smooth-scroll" href="#footer">Контакты</a></li>
+            <li> <a href="{{ url_for('price') }}">Цена</a></li>
+        </ul>
+    </nav>
+    <div class="rega">
+    {% if not user.is_authenticated %}
+    <a href="{{ url_for('register') }}" class="sign">Регистрация</a>
+    <a href="{{ url_for('login') }}" class="login">Войти</a>
+    {% else %}
+    <a href="{{ url_for('profile') }}" class="sign">Личный кабинет</a>
+    <a href="{{ url_for('logout') }}" class="login">Выйти</a>
+    {% endif %}
+  </div>
+</header>
+    <!--Меню-->
+
+    <div class="home">
+        <h1>Анализ бега с помощью<br>искуственного интелекта</h1>
+        <p>Загружайте видео вашего бега, наш искусственный интеллект<br>внимательно изучит его, выявит сильные и слабые стороны,<br>и предоставит вам рекомендации по их улучшению.</p>
+        <div class="button-container">
+        <button><a href="#">Попробовать</a></button>
+        </div>
+    </div>
+
+    <div class="container advantages" id="my-block">
+        <div class="header">
+          <h1>Наши преимущества</h1>
+          <p>
+            Совершенствуйтесь вместе с нами, станьте быстрее и устойчивее к
+            травмам
+          </p>
+        </div>
+        <div class="content">
+          <div class="text-items">
+            <div class="item">
+              <div class="number">01.</div>
+              <div class="text">
+                <h2>Для кого</h2>
+                <p>
+                  Для начинающих бегунов и для опытных атлетов, которые хотят
+                  улучшить свою технику и предотвратить беговые травмы
+                </p>
+              </div>
+            </div>
+            <div class="item">
+              <div class="number">02.</div>
+              <div class="text">
+                <h2>Зачем</h2>
+                <p>
+                  Увидеть ошибки и недостатки, которые мешают бежать быстрее,
+                  дольше и безопаснее
+                </p>
+              </div>
+            </div>
+            <div class="item">
+              <div class="number">03.</div>
+              <div class="text">
+                <h2>Что вы получите</h2>
+                <p>
+                  Разбор вашей техники бега по главным биомеханическим и
+                  динамическим показателям
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="image">
+            <img src="{{ url_for('static', filename='img/advantages.jpg') }}" alt="Runner" />
+          </div>
+        </div>
+      </div>
+
+
+
+    <div class="get">
+        <div class="image-get">
+            <img src="{{ url_for('static', filename='img/run.jpg') }}" alt="Running Image">
+        </div>
+
+        <div class="content">
+            <h1>Получите<br>персонализированный<br>анализ своего бега</h1>
+            <p>• Наш анализ носит персонализированный характер<br>для каждого человека.</p>
+            <p>• Получите подробную информацию о каждой точке<br>тела и посмотрите, какие у нее слабые места.</p>
+            <p>• Получите точные ключевые показатели и данные,<br>которые обеспечат вам преимущество при таких<br>небольших затратах.</p>
+        </div>
+    </div>
+
+
+
+
+<div class="ease-section">
+  <div class="ease-content">
+      <div class="ease-text">
+          <h1>Легкость использования</h1>
+          <ol>
+              <li>1. Не требуется никаких датчиков или носимых устройств, только камера смартфона.</li>
+              <li>2. Следует снять видео или загрузить уже снятое, и загрузить на наш сайт для обработки</li>
+              <li>3. Быстрое получение результата</li>
+              <li>4. Поделитесь результатами с кем хотите.</li>
+          </ol>
+          <button class="cta-button">Попробовать ➔</button>
+      </div>
+      <div class="ease-image">
+          <img src="{{ url_for('static', filename='img/любитель.jpg') }}" alt="Using App">
+      </div>
+  </div>
+</div>
+
+
+<div class="footer" id="footer">
+  <div class="container">
+      <div class="infa logo">
+          <a href="#" class="logo">БЕГ.AI</a>
+      </div>
+      <div class="infa contacts">
+          <p class="zagolovok">Контакты</p>
+          <p class="pun">
+            <a href="tel:+79062802522">+7 906 280 2522</a>
+          </p>
+          <p class="pun">
+            <a href="mailto:runai.@mail.ru">runai.@mail.ru</a>
+          </p>
+          <p class="pun">
+            <a href="https://t.me/goorbunova">Написать в Telegram</a>
+          </p>
+      </div>
+      <div class="infa company">
+          <p class="zagolovok">Компания</p>
+          <p class="pun">
+            <a class="smooth-scroll" href="#my-block">Преимущества</a>
+          </p>
+          <p class="pun">
+            <a href="{{ url_for('feedback') }}">Обратная связь</a>
+          </p>
+      </div>
+      <div class="infa product">
+          <p class="zagolovok">Продукт</p>
+          <p class="pun">
+            <a href="{{ url_for('instructions') }}">Инструкция</a>
+          </p>
+      </div>
+  </div>
+</div>
+
+<script>
+    document.querySelectorAll('.smooth-scroll').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+      
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      });
+</script>
+</body>
+</html>

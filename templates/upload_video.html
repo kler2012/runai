@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Загрузка видео{% endblock %}
+{% block content %}
+<h1>Загрузить видео</h1>
+<form method="post" enctype="multipart/form-data">
+    <label for="video">Выберите видео:</label>
+    <input type="file" name="video" id="video" required><br>
+    <input type="submit" value="Загрузить">
+</form>
+<a href="{{ url_for('profile') }}">Назад к личному кабинету</a>
+{% endblock %}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <script src="{{ url_for('static', filename='login.js')}}"></script>
+</head>
+<body>
+    <div class="login-container"> 
+        <div class="image-login">
+            <img src="{{ url_for('static', filename='img/run.jpg') }}" alt="Running Image">
+        </div>
+        <div class="form">
+        <form class="login-form" method="post">
+            <h1>Добро пожаловать в БЕГ.AI</h1>
+            <p>Улучшите свою технику бега с помощью нашего сервиса</p>
+            <input type="email" name="login" class="login-input" placeholder="Электронная почта">
+            <div class="error-message" id="emailError"></div>
+            <input type="password" class="login-input" name="password" placeholder="Пароль">
+            <button type="submit" class="login-btn" value="Войти" id="loginBtn">Войти</button>
+            <p class="text-ac">Нет аккаунта? <a href="{{ url_for('register') }}" class="register-login-link">Зарегистрироваться</a></p> 
+        </form>
+    </div>
+</div>
+</body>
+</html>

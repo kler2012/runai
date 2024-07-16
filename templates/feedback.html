@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обратная связь</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+    <!-- хедер подключить надо-->
+
+    <div class="feedback">
+        <div class="message">
+            <h1>Обратная связь</h1>
+            <form action="#" method="post">
+                <p>Ваше имя:</p>
+                <input type="text" name="name" class="message-feedback" placeholder="Имя">
+        
+                <p>Ваш адрес электронной почты:</p>
+                <input type="email" name="email" class="message-feedback" placeholder="Электронная почта">
+        
+                <p>Ваше сообщение:</p>
+                <textarea name="message" class="message-feedback" placeholder="Сообщение" rows="7"></textarea>
+        
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+        <div class="image-feedback">
+            <img src="{{ url_for('static', filename='img/feedback.jpg') }}" alt="Runner" />
+          </div>
+    </div>
+
+        <!-- ну и футер мбмб-->
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const form = document.querySelector('.message form');
+                const inputs = document.querySelectorAll('.message-feedback');
+        
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault(); 
+        
+                    let isValid = true; 
+        
+                    inputs.forEach(function(input) {
+                        if (input.value.trim() === '') { 
+                            input.classList.add('error'); 
+                            isValid = false; 
+                        } else {
+                            input.classList.remove('error'); 
+                        }
+                    });
+        
+                    if (isValid) { 
+                        form.submit();
+                    }
+                });
+            });
+        </script>
+        
+</body>
+</html>
